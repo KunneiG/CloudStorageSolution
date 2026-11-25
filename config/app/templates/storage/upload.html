@@ -1,0 +1,14 @@
+{% extends 'storage/base.html' %}
+
+{% block title %}Загрузка файла{% endblock %}
+
+{% block content %}
+<h1>Загрузить файл</h1>
+
+<!-- enctype ОБЯЗАТЕЛЕН для загрузки файлов -->
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Загрузить</button>
+</form>
+{% endblock %}

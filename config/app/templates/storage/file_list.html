@@ -1,0 +1,44 @@
+{% extends 'storage/base.html' %}
+
+{% block title %}Мои файлы{% endblock %}
+
+{% block content %}
+<h1>Мои файлы</h1>
+
+<form method="get" class="filters">
+    <input type="text" name="q" placeholder="Поиск..." value="{{ query|default:'' }}">
+    <select name="type">
+        <option value="">Все типы</option>
+        <option value="image" {% if current_type == 'image' %}selected{% endif %}>Изображения</option>
+        <option value="video" {% if current_type == 'video' %}selected{% endif %}>Видео</option>
+        <option value="document" {% if current_type == 'document' %}selected{% endif %}>Документы</option>
+        <option value="other" {% if current_type == 'other' %}selected{% endif %}>Другое</option>
+    </select>
+    <button type="submit">Фильтровать</button>
+</form>
+
+<div class="file-grid">
+    {% for file in files %}
+    <div class="file-card">
+        {% if file.is_image %}
+        <img src="{{ file.file.url }}" alt="{{ file.title }}">
+        {% elif file.is_video %}
+        <video src="{{ file.file.url }}" controls preload="metadata"></video>
+        {% else %}
+        <div class="placeholder">📄</div>
+        {% endif %}
+
+        <h3><a href="{{ file.get_absolute_url }}">{{ file.title|default:file.file.name }}</a></h3>
+        <p>{{ file.get_file_type_display }} • {{ file.size_display }}</p>
+        <p>{{ file.uploaded_at|date:"d.m.Y H:i" }}</p>
+
+        <div class="actions">
+            <a href="{% url 'file_download' file.pk %}">Скачать</a>
+            <a href="{% url 'file_delete' file.pk %}">Удалить</a>
+        </div>
+    </div>
+    {% empty %}
+    <p>Файлов пока нет. <a href="{% url 'upload' %}">Загрузить первый файл</a></p>
+    {% endfor %}
+</div>
+{% endblock %}

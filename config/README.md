@@ -1,0 +1,6 @@
+![login](screenshots/login.png)
+![registration](screenshots/registration.png)
+![moifaily](screenshots/moifaily.png)
+![upload](screenshots/upload.png)
+![with file](screenshots/with_file.png)
+![details](screenshots/details.png)

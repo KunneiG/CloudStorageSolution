@@ -1,0 +1,25 @@
+{% extends 'storage/base.html' %}
+
+{% block title %}{{ file.title|default:file.file.name }}{% endblock %}
+
+{% block content %}
+<h1>{{ file.title|default:file.file.name }}</h1>
+
+{% if file.is_image %}
+<img src="{{ file.file.url }}" alt="{{ file.title }}" style="max-width:100%;">
+{% elif file.is_video %}
+<video src="{{ file.file.url }}" controls style="max-width:100%;"></video>
+{% else %}
+<p>Предпросмотр недоступен для этого типа файла.</p>
+{% endif %}
+
+<ul>
+    <li>Тип: {{ file.get_file_type_display }}</li>
+    <li>Размер: {{ file.size_display }}</li>
+    <li>Загружен: {{ file.uploaded_at|date:"d.m.Y H:i" }}</li>
+    <li>Публичный: {{ file.is_public|yesno:"да,нет" }}</li>
+</ul>
+
+<a href="{% url 'file_download' file.pk %}">Скачать</a>
+<a href="{% url 'file_list' %}">← К списку</a>
+{% endblock %}
